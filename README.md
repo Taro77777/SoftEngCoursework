@@ -1,17 +1,22 @@
+# Software Engineering Coursework: A social music sharing website.
+
+# Group name: SHT     Group members: Sebastian Moreno, Habsa Sharif, Taro Chamberlain
+
+# Project Description (As at 09/02/26)
+In this project we are making a web application where users can listen to music and leave comments on songs to speak with other users about the songs.
+Users will need an account, and will be able to search the database of songs for specific artists.
+
+# How we made this
+Tech used so far: Javascript, CSS, HTML, Docker, Visual Studio Code, SQL
+
+So far we've learned how to route user requests, and simple-ish usage of HTML, but as this is a semester spanning project, we will all learn new front end design/functionality.
+
+# Lessons learned:
+(this is a placeholder for now since the project is still quite new, will be filled later into our work)
 
 
 
-
-
-
-
-
-
-
-
-
-
-The following is instructions on how this code runs.
+# The following is instructions on how this code runs.
 ________________________________________________________________
 
 
