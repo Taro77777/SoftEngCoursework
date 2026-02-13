@@ -42,6 +42,31 @@ app.get("/hello/:name", function(req, res) {
     res.send("Hello " + req.params.name);
 });
 
+app.get("/user/:id_number", function(req, res) {
+    console.log(req.params);
+    res.send("Hello " + req.params.id_number);
+});
+
+app.get("/student/:name/:id_number", function(req,res) {
+    console.log(req.params)
+    res.send("Hello " + req.params.name + " " + req.params.id_number)
+});
+
+
+
+app.get("/roehampton", function(req, res) {
+    res.send("Hello Roehampton!")
+    console.log(req.url)
+    let path = req.url;
+    res.send(path.substring(0,3))
+});
+
+// Create a route for root - /
+app.get("/", function(req, res) {
+    res.send("Hello world!")
+})
+
+
 app.get("/banana", function(req, res) {
     res.send("banana!!!!!?!?!?!?")
 })
