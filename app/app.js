@@ -25,6 +25,14 @@ app.get("/db_test", function(req, res) {
     });
 });
 
+app.get("/dbtest2", function(req, res) {
+    sql = 'select * from Programmes';
+    db.query(sql).then(results => {
+        console.log(results);
+        res.send(results)
+    });
+})
+
 // Create a route for /goodbye
 // Responds to a 'GET' request
 app.get("/goodbye", function(req, res) {
