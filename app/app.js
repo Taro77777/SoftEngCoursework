@@ -36,14 +36,18 @@ app.get("/all-students", function(req, res) {
 
 });
 
-// Task 2 display a formatted list of students
-app.get("/all-students-formatted", function(req, res) {
-    var sql = 'select * from Students';
+
+// JSON output of all programmes
+app.get("/song", function(req, res) {
+    var sql = 'select * from Song';
+    // As we are not inside an async function we cannot use await
+    // So we use .then syntax to ensure that we wait until the 
+    // promise returned by the async function is resolved before we proceed
     db.query(sql).then(results => {
-    	    // Send the results rows to the all-students template
-    	    // The rows will be in a variable called data
-        res.render('all-students', {data: results});
+        console.log(results);
+        res.json(results);
     });
+
 });
 
 // Single student page.  Show the students name, course and modules
