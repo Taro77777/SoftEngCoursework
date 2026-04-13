@@ -34,7 +34,7 @@ app.get("/user", function(req, res) {
 
 });
 
-// Task 2 display a formatted list of students
+// Task 2 display a formatted list of Users
 app.get("/all-users", function(req, res) {
     var sql = 'select * from UsersList';
     db.query(sql).then(results => {
