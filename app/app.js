@@ -34,6 +34,15 @@ app.get("/user", function(req, res) {
 
 });
 
+// Task 2 display a formatted list of students
+app.get("/all-users", function(req, res) {
+    var sql = 'select * from UsersList';
+    db.query(sql).then(results => {
+            // Send the results rows to the UserList template
+            // The rows will be in a variable called data
+        res.render('UsersList', {data: results});
+    });
+});
 
 
 // Single user page - shows their playlist and favourite song
