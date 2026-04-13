@@ -14,8 +14,6 @@ app.set('views', './app/views');
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
-// Get the student model
-const { Student } = require("./models/student");
 
 // Create a route for root - /
 app.get("/", function(req, res) {
@@ -23,74 +21,61 @@ app.get("/", function(req, res) {
 });
 
 
-// Task 1 JSON formatted listing of students
-app.get("/all-students", function(req, res) {
+// Task 1 JSON formatted listing of Users
+app.get("/user", function(req, res) {
+    var sql = 'select * from UsersList';
+    // As we are not inside an async function we cannot use await
+    // So we use .then syntax to ensure that we wait until the 
+    // promise returned by the async function is resolved before we proceed
+    db.query(sql).then(results => {
+        console.log(results);
+        res.json(results);
+    });
+
+});
+
+// Task 2 display a formatted list of students
+app.get("/all-students-formatted", function(req, res) {
     var sql = 'select * from Students';
-    // As we are not inside an async function we cannot use await
-    // So we use .then syntax to ensure that we wait until the 
-    // promise returned by the async function is resolved before we proceed
     db.query(sql).then(results => {
-        console.log(results);
-        res.json(results);
+    	    // Send the results rows to the all-students template
+    	    // The rows will be in a variable called data
+        res.render('all-students', {data: results});
     });
 
 });
 
-
-// JSON output of all programmes
-app.get("/song", function(req, res) {
-    var sql = 'select * from Song';
-    // As we are not inside an async function we cannot use await
-    // So we use .then syntax to ensure that we wait until the 
-    // promise returned by the async function is resolved before we proceed
-    db.query(sql).then(results => {
-        console.log(results);
-        res.json(results);
+// Single user page - shows their playlist and favourite song
+app.get("/User-single/:id", function(req, res) {   
+    var userID = req.params.id;
+    
+    // SQL query to get all playlists belonging to this user
+    var playlistSql = 'SELECT * FROM Playlist WHERE UserID = ?';
+    
+    // SQL query to get the favourite song - SongID matches the UserID
+    // for example user 1's (taro) favourite song is SongID 1
+    var favSongSql = 'SELECT * FROM Song WHERE SongID = ?';
+    
+    // Runs the playlist query first by passing in the userID to replace the ?
+    db.query(playlistSql, [userID]).then(playlistResults => {
+        
+        // Once playlist query is done, run the favourite song query
+        // Also passing in userID to replace the ?
+        db.query(favSongSql, [userID]).then(favResults => {
+            
+            // Print to terminal so we can check the correct data is coming back
+            console.log('UserID:', userID);
+            console.log('favResults:', favResults);
+            
+            // Send both results to the User-single.pug template
+            // data = all their playlists (array of results)
+            // favSong = their favourite song (just the first result [0])
+            res.render('User-single', {
+                data: playlistResults,   // used as 'data' in pug
+                favSong: favResults[0]   // used as 'favSong' in pug
+            });
+        });
     });
-
-});
-
-// Single student page.  Show the students name, course and modules
-app.get("/student-single/:id", async function (req, res) {
-    var stId = req.params.id;
-    // Create a student class with the ID passed
-    var student = new Student(stId);
-    await student.getStudentName();
-    await student.getStudentProgramme();
-    await student.getStudentModules();
-    console.log(student);
-    res.render('student', {student:student});
-});
-
-
-
-// JSON output of all programmes
-app.get("/all-programmes", function(req, res) {
-    var sql = 'select * from Programmes';
-    // As we are not inside an async function we cannot use await
-    // So we use .then syntax to ensure that we wait until the 
-    // promise returned by the async function is resolved before we proceed
-    db.query(sql).then(results => {
-        console.log(results);
-        res.json(results);
-    });
-
-});
-
-// Single programme page (no formatting or template)
-app.get("/programme-single/:id", async function (req, res) {
-    var pCode = req.params.id;
-    var pSql = "SELECT * FROM Programmes WHERE id = ?";
-    var results = await db.query(pSql, [pCode]);
-    //Now call the database for the modules
-    //Why do you think that the word modules is coming in before the name of the programme??
-    var modSql = "SELECT * FROM Programme_Modules pm \
-    JOIN Modules m on m.code = pm.module \
-    WHERE programme = ?";
-    var modResults = await db.query(modSql, [pCode]);
-    // String the results together, just for now.  Later we will push this
-    // through the template
-    res.send(JSON.stringify(results) + JSON.stringify(modResults));  
 });
 
 
