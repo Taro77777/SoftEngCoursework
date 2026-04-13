@@ -1,0 +1,14 @@
+extends layout
+block content
+    h1 Playlist for: #{data[0].UserID}
+    p Your user ID is: #{data[0].UserID}
+    h2 Favourite Song
+    p  Name: #{favSong.SongName}
+    p release Date: #{favSong.SongDate}
+    h2 Playlists
+    table(border=1)
+        for item in data
+            tr
+                td #{item.PlaylistID}
+                td #{item.Title}
+                td #{item.PlaylistDate}
