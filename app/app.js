@@ -44,21 +44,21 @@ app.get("/User-single/:id", function(req, res) {
     var playlistSql = 'SELECT * FROM Playlist WHERE UserID = ?';
     
     // SQL query to get the favourite song - SongID matches the UserID
-    // for example user 1's (taro) favourite song is SongID 1
+    // for example user 1's (taro) favourite song is SongID 1 (rockstar)
     var favSongSql = 'SELECT * FROM Song WHERE SongID = ?';
     
-    // Runs the playlist query first by passing in the userID to replace the ?
+    // Runs the playlist query first by passing in the userID to replace the "?"
     db.query(playlistSql, [userID]).then(playlistResults => {
         
         // Once playlist query is done, run the favourite song query
         // Also passing in userID to replace the ?
         db.query(favSongSql, [userID]).then(favResults => {
             
-            // Print to terminal so we can check the correct data is coming back
+            //prints results to terminal
             console.log('UserID:', userID);
             console.log('favResults:', favResults);
             
-            // Send both results to the User-single.pug template
+            // Sends results to the User-single.pug template
             // data = all their playlists (array of results)
             // favSong = their favourite song (just the first result [0])
             res.render('User-single', {
