@@ -34,6 +34,12 @@ app.get("/user", function(req, res) {
 
 });
 
+app.get("/all-users", function(req,res) {
+    var sql = 'select * from UsersList';
+    db.query(sql).then(results => (
+        res.render('UsersList',{data: results})
+    ))
+});
 
 
 // Single user page - shows their playlist and favourite song
