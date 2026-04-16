@@ -44,35 +44,28 @@ app.get("/all-users", function(req, res) {
     });
 });
 
-
-// Single user page - shows their playlist and favourite song
-app.get("/User-single/:id", function(req, res) {   
+// each individual page of our users
+app.get("/User-single/:id", function(req, res) {
     var userID = req.params.id;
-    
-    // SQL query to get all playlists belonging to this user
+
+    var userSql = 'SELECT * FROM UsersList WHERE UserID = ?';
     var playlistSql = 'SELECT * FROM Playlist WHERE UserID = ?';
-    
-    // SQL query to get the favourite song - SongID matches the UserID
-    // for example user 1's (taro) favourite song is SongID 1 (rockstar)
-    var favSongSql = 'SELECT * FROM Song WHERE SongID = ?';
-    
-    // Runs the playlist query first by passing in the userID to replace the "?"
-    db.query(playlistSql, [userID]).then(playlistResults => {
-        
-        // Once playlist query is done, run the favourite song query
-        // Also passing in userID to replace the ?
-        db.query(favSongSql, [userID]).then(favResults => {
-            
-            //prints results to terminal
-            console.log('UserID:', userID);
-            console.log('favResults:', favResults);
-            
-            // Sends results to the User-single.pug template
-            // data = all their playlists (array of results)
-            // favSong = their favourite song (just the first result [0])
-            res.render('User-single', {
-                data: playlistResults,   // used as 'data' in pug
-                favSong: favResults[0]   // used as 'favSong' in pug
+    // Join Song and Artist tables to get all song and artist info
+    var favSongSql = 'SELECT Song.*, Artist.ArtistName, Artist.Genre FROM Song JOIN Artist ON Song.ArtistID = Artist.ArtistID WHERE Song.SongID = ?';
+    // Get favourite artist - ArtistID matches UserID
+    var favArtistSql = 'SELECT * FROM Artist WHERE ArtistID = ?';
+
+    db.query(userSql, [userID]).then(userResults => {
+        db.query(playlistSql, [userID]).then(playlistResults => {
+            db.query(favSongSql, [userID]).then(favResults => {
+                db.query(favArtistSql, [userID]).then(artistResults => {
+                    res.render('User-single', {
+                        user: userResults[0],       // username, realname
+                        data: playlistResults,       // their playlists
+                        favSong: favResults[0],      // their favourite song
+                        favArtist: artistResults[0]  // their favourite artist
+                    });
+                });
             });
         });
     });
