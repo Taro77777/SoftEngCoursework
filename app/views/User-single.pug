@@ -1,10 +1,15 @@
 extends layout
 block content
-    h1 Playlist for: #{data[0].UserID}
-    p Your user ID is: #{data[0].UserID}
+    h1 Page for: #{user.username}
+    p Real Name: #{user.realname}
+    p User ID: #{user.UserID}
     h2 Favourite Song
-    p  Name: #{favSong.SongName}
-    p release Date: #{favSong.SongDate}
+    p Name: #{favSong.SongName}
+    p Date: #{favSong.SongDate}
+    p Artist: #{favSong.ArtistName}
+    h2 Favourite Artist
+    p Name: #{favArtist.ArtistName}
+    p Genre: #{favArtist.Genre}
     h2 Playlists
     table(border=1)
         for item in data
