@@ -34,14 +34,18 @@ app.get("/user", function(req, res) {
 
 });
 
-// Task 2 display a formatted list of Users
-app.get("/all-users", function(req, res) {
-    var sql = 'select * from UsersList';
+
+// JSON output of all programmes
+app.get("/song", function(req, res) {
+    var sql = 'select * from Song';
+    // As we are not inside an async function we cannot use await
+    // So we use .then syntax to ensure that we wait until the 
+    // promise returned by the async function is resolved before we proceed
     db.query(sql).then(results => {
-            // Send the results rows to the UserList template
-            // The rows will be in a variable called data
-        res.render('UsersList', {data: results});
+        console.log(results);
+        res.json(results);
     });
+
 });
 
 // each individual page of our users
