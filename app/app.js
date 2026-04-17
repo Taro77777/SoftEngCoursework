@@ -66,11 +66,11 @@ app.get("/User-single/:id", function(req, res) {
     // Get favourite artist - ArtistID matches UserID
     var favArtistSql = 'SELECT * FROM Artist WHERE ArtistID = ?';
 
-    db.query(userSql, [userID]).then(userResults => {
+    db.query(userSql, [userID]).then(userResults => { 
         db.query(playlistSql, [userID]).then(playlistResults => {
-            db.query(favSongSql, [userID]).then(favResults => {
+            db.query(favSongSql, [userID]).then(favResults => { // favResults will contain all the info about the user's favourite song, including artist name and genre
                 db.query(favArtistSql, [userID]).then(artistResults => {
-                    res.render('User-single', {
+                    res.render('User-single', { // render the User-single template and pass in the data we retrieved from the database
                         user: userResults[0],       // username, realname
                         data: playlistResults,       // their playlists
                         favSong: favResults[0],      // their favourite song
