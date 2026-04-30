@@ -1,6 +1,7 @@
 const db = require("../services/db");
 const bcrypt = require("bcryptjs");
 
+// User model for handling user-related database operations and authentication logic
 class User {
   constructor(email) {
     this.email = email;
@@ -31,6 +32,7 @@ class User {
     return this.id;
   }
 
+  // Add a new user to the database with hashed password
   async addUser(data) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const result = await db.query(
@@ -52,6 +54,7 @@ class User {
     this.role = "user";
     return true;
   }
+
 
   async authenticate(password) {
     const rows = await db.query("SELECT id, username, password, role FROM Users WHERE email = ?", [this.email]);
@@ -80,6 +83,7 @@ class User {
     return false;
   }
 
+  // Get the average rating and total number of ratings for all playlists created by a specific user
   static async getCreatorAverageRating(userId) {
   const results = await db.query(
     `SELECT AVG(PlaylistRatings.rating) AS average_rating,

@@ -109,11 +109,12 @@ app.get("/profile/edit", requireLogin, async function(req, res) {
   res.render("edit-profile", { title: "Edit Profile", user });
 });
 
+//handles profile updates by logged in users.
 app.post("/profile/edit", requireLogin, async function(req, res) {
   await User.updateProfile(req.session.uid, req.body);
   res.redirect("/users/" + req.session.uid);
 });
-
+//Add a new user to the database with hashed password
 app.get("/songs", async function(req, res) {
   const q = (req.query.q || "").trim();
   const songs = q ? await Song.search(q) : await Song.getAll();
@@ -137,6 +138,7 @@ app.post("/songs/:id/comments", requireLogin, async function(req, res) {
   res.redirect("/songs/" + req.params.id);
 });
 
+//allows users to reply to comments on songs. 
 app.post("/comments/:id/replies", requireLogin, async function(req, res) {
   const text = (req.body.comment_text || "").trim();
   const songId = req.body.song_id;
@@ -146,6 +148,7 @@ app.post("/comments/:id/replies", requireLogin, async function(req, res) {
   res.redirect("/songs/" + songId);
 });
 
+//Route for editing and deleting comments. Users can only edit or delete their own comments, while admins can edit or delete any comment. Also allows users to report comments for inappropriate content, which sends the comment to an admin review queue.
 app.get("/comments/:id/edit", requireLogin, async function(req, res) {
   const comment = await Comment.getById(req.params.id);
 
