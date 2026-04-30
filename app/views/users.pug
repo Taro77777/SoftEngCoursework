@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Community
+    h1 Members
+    p Find other MusicWe users and view their public profiles.
+  div.card-grid
+    each user in users
+      a.card(href="/users/" + user.id)
+        img.avatar(src=user.profile_image, alt=user.username)
+        h3 #{user.username}
+        p #{user.bio}
+        span.tag #{user.favourite_genre || 'Music fan'}

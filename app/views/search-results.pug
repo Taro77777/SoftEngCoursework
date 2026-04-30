@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Search
+    h1 Search results
+    if q
+      p Showing songs matching “#{q}”.
+    else
+      p Type a song, artist, or genre in the search bar.
+  div.card-grid
+    if songs.length
+      each song in songs
+        a.card.song-card(href="/songs/" + song.id)
+          img.cover(src=song.cover_image, alt=song.title)
+          h3 #{song.title}
+          p #{song.artist}
+          span.tag #{song.genre_name}
+    else
+      p.empty No results yet.

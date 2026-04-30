@@ -1,0 +1,61 @@
+extends layout
+
+block content
+  section.detail-panel
+    img.cover.large(src=playlist.cover_image, alt=playlist.title)
+    div.detail-copy
+      p.eyebrow Playlist
+      h1 #{playlist.title}
+      p #{playlist.description}
+      p.meta Created by #{playlist.username}
+
+  section.rating-panel
+    h2 Playlist rating
+
+    if ratingSummary && ratingSummary.rating_count > 0
+      p.rating-score #{Number(ratingSummary.average_rating).toFixed(1)} / 5
+      p #{ratingSummary.rating_count} rating(s)
+    else
+      p No ratings yet.
+
+    if loggedIn
+      form.form.compact(action="/playlists/" + playlist.id + "/rate", method="POST")
+        label Rate this playlist
+        select(name="rating", required)
+          option(value="5" selected=userRating && userRating.rating == 5) ★★★★★
+          option(value="4" selected=userRating && userRating.rating == 4) ★★★★☆
+          option(value="3" selected=userRating && userRating.rating == 3) ★★★☆☆
+          option(value="2" selected=userRating && userRating.rating == 2) ★★☆☆☆
+          option(value="1" selected=userRating && userRating.rating == 1) ★☆☆☆☆
+        button(type="submit") Save rating
+    else
+      p
+        | Log in to rate this playlist.
+
+  if loggedIn
+    section.section.compact
+      h2 Add a song
+      form.form.search-form(action="/playlists/" + playlist.id, method="GET")
+        label Search songs to add
+        div.inline-form.clean
+          input(type="search", name="q", placeholder="Search by song or artist", value=q)
+          button(type="submit") Search
+
+      form.inline-form(action="/playlists/" + playlist.id + "/add-song", method="POST")
+        select(name="song_id", required)
+          each song in allSongs
+            option(value=song.id) #{song.artist} — #{song.title}
+        button(type="submit") Add selected song
+
+  section.section
+    h2 Songs in this playlist
+    div.card-grid
+      if songs.length
+        each song in songs
+          a.card.song-card(href="/songs/" + song.id)
+            img.cover(src=song.cover_image, alt=song.title)
+            h3 #{song.title}
+            p #{song.artist}
+            span.tag Added by #{song.added_by_username || 'community'}
+      else
+        p.empty No songs in this playlist yet.

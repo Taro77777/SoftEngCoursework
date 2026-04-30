@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Playlists
+    h1 Create Playlist
+  form.form(action="/playlists/new", method="POST")
+    label Title
+    input(type="text", name="title", required)
+    label Description
+    textarea(name="description", rows="4", required)
+    label Choose a playlist cover
+    select(name="cover_image", required)
+      option(value="/images/playlists/fire.jpg") Fire
+      option(value="/images/playlists/leaves.jpg") Leaves
+      option(value="/images/playlists/blue-night.jpg") Blue Night
+      option(value="/images/playlists/city-night.jpg") City Night
+      option(value="/images/playlists/red-branches.jpg") Red Branches
+      option(value="/images/playlists/lightning.jpg") Lightning
+      option(value="/images/playlists/clouds.jpg") Clouds
+      option(value="/images/playlists/abstract.jpg") Abstract
+
+    button(type="submit") Create playlist

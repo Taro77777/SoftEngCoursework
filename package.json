@@ -1,20 +1,21 @@
 {
-  "name": "banana",
+  "name": "musicwe-coursework",
   "version": "1.0.0",
-  "description": "",
+  "description": "MusicWe - music community discussion coursework app",
   "main": "index.js",
   "scripts": {
     "start": "supervisor index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/basic-test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.0",
-    "pug": "^3.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.11.0",
+    "pug": "^3.0.2",
     "supervisor": "^0.12.0"
   }
 }

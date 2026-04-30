@@ -1,5 +1,5 @@
 # Base image to use
-FROM node:latest
+FROM node:20
 
 # set a working directory
 WORKDIR /src

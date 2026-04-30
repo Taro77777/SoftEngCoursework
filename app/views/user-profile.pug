@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  section.profile-panel
+    img.avatar.large(src=user.profile_image, alt=user.username)
+
+    div
+      p.eyebrow Profile
+      h1 #{user.username}
+
+      if user.role == 'admin'
+        span.tag Admin account
+
+      p Real name: #{user.real_name || 'Not set'}
+
+      if user.age
+        p Age: #{user.age}
+
+      p Favourite genre: #{user.favourite_genre || 'Not set'}
+      p #{user.bio}
+
+      if loggedIn && currentUserId == user.id
+        a.button(href="/profile/edit") Edit profile
+
+      section.rating-panel
+        h2 Playlist creator rating
+
+        if ratingSummary && ratingSummary.rating_count > 0
+          p.rating-score #{Number(ratingSummary.average_rating).toFixed(1)} / 5
+          p Based on #{ratingSummary.rating_count} playlist rating(s)
+        else
+          p No playlist ratings yet.
+
+  section.section
+    h2 Public playlists
+
+    div.card-grid
+      if playlists.length
+        each playlist in playlists
+          a.card(href="/playlists/" + playlist.id)
+            img.cover(src=playlist.cover_image, alt=playlist.title)
+            h3 #{playlist.title}
+            span.tag #{playlist.song_count} songs
+      else
+        p.empty This user has not created any playlists yet.

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  section.profile-panel
+    img.avatar.large(src=artist.image, alt=artist.name)
+    div
+      p.eyebrow Artist
+      h1 #{artist.name}
+      p #{artist.bio}
+  section.section
+    h2 Songs by #{artist.name}
+    div.card-grid
+      each song in songs
+        a.card.song-card(href="/songs/" + song.id)
+          img.cover(src=song.cover_image, alt=song.title)
+          h3 #{song.title}
+          p #{song.genre_name} · #{song.release_year}

@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Account
+    h1 Edit Profile
+  form.form(action="/profile/edit", method="POST")
+    label Username
+    input(type="text", name="username", value=user.username, required)
+    label Real name
+    input(type="text", name="real_name", value=user.real_name)
+    label Age
+    input(type="number", name="age", value=user.age)
+    label Favourite genre
+    input(type="text", name="favourite_genre", value=user.favourite_genre)
+    label Bio
+    textarea(name="bio", rows="5") #{user.bio}
+    button(type="submit") Save profile
