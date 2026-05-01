@@ -1,3 +1,5 @@
+// part of the model: responsible for getting/updating db data
+
 const db = require("../services/db");
 
 class Artist {
@@ -5,6 +7,8 @@ class Artist {
     const rows = await db.query("SELECT * FROM Artists WHERE id = ?", [id]);
     return rows[0];
   }
+
+  //query for getting id
 
   static async getSongs(id) {
     return await db.query(
@@ -16,7 +20,7 @@ class Artist {
        ORDER BY Songs.title`,
       [id]
     );
-  }
+  }       //query for getting a song using the id
 }
 
-module.exports = { Artist };
+module.exports = { Artist };    //exports this as an artists table

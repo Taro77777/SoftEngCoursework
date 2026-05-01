@@ -1,3 +1,5 @@
+//app.js receives browser requests, calls the right model to get/update database data, then sends the result to a Pug view.
+
 //import core libraries for server and sessions handling
 const express = require("express");
 const session = require("express-session");
