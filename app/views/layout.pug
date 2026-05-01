@@ -1,5 +1,30 @@
-html 
-    head    
-        title #{title}
-    body 
-        block content
+doctype html
+html
+  head
+    title #{title || 'MusicWe'}
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    header.site-header
+      nav.navbar
+        a.logo(href="/") MusicWe
+        form.nav-search(action="/search", method="GET")
+          input(type="search", name="q", placeholder="Search songs or artists...", value=q)
+          button(type="submit") Search
+        div.nav-links
+          a(href="/songs") Songs
+          a(href="/playlists") Playlists
+          a(href="/users") Users
+          if isAdmin
+            a(href="/admin/reports") Admin
+          if loggedIn
+            a(href="/users/" + currentUserId) My Profile
+            a(href="/logout") Logout
+          else
+            a(href="/login") Login
+            a.cta-link(href="/register") Register
+    main.page
+      block content
+    footer.site-footer
+      p Here is the footer - lest we populate it with fake social media links.

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.page-title.split
+    div
+      p.eyebrow Community playlists
+      h1 Public Playlists
+      p Browse shared playlists created by MusicWe users.
+    if loggedIn
+      a.button(href="/playlists/new") Create playlist
+  div.card-grid
+    each playlist in playlists
+      a.card(href="/playlists/" + playlist.id)
+        img.cover(src=playlist.cover_image, alt=playlist.title)
+        h3 #{playlist.title}
+        p #{playlist.description}
+        span.tag #{playlist.song_count} songs

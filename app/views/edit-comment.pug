@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Discussion
+    h1 Edit comment
+  form.form(action="/comments/" + comment.id + "/edit", method="POST")
+    label Comment text
+    textarea(name="comment_text", rows="5", required) #{comment.comment_text}
+    button(type="submit") Save comment
+    a.button.secondary(href="/songs/" + comment.song_id) Cancel

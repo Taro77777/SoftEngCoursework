@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Account
+    h1 Register
+  form.form(action="/register", method="POST")
+    label Email
+    input(type="email", name="email", required)
+    label Password
+    input(type="password", name="password", required)
+    label Username
+    input(type="text", name="username", required)
+    label Real name
+    input(type="text", name="real_name")
+    label Age
+    input(type="number", name="age")
+    label Favourite genre
+    input(type="text", name="favourite_genre")
+    label Bio
+    textarea(name="bio", rows="4")
+    button(type="submit") Create account

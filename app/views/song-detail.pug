@@ -1,0 +1,84 @@
+extends layout
+
+mixin commentThread(comment)
+  article.comment
+    div.comment-header
+      img.avatar.small(src=comment.profile_image, alt=comment.username)
+      div
+        strong #{comment.username}
+        small #{comment.created_at}
+
+    p #{comment.comment_text}
+
+    if comment.updated_at
+      small Edited #{comment.updated_at}
+
+    div.comment-actions
+      if loggedIn
+        details.comment-dropdown
+          summary.tiny Reply
+          form.reply-form(action="/comments/" + comment.id + "/replies", method="POST")
+            input(type="hidden", name="song_id", value=song.id)
+            textarea(name="comment_text", rows="3", required, placeholder="Reply to " + comment.username + "...")
+            button(type="submit") Post reply
+
+        details.comment-dropdown
+          summary.tiny Report
+          form.reply-form(action="/comments/" + comment.id + "/report", method="POST")
+            textarea(name="reason", rows="2", placeholder="Why are you reporting this comment?")
+            button(type="submit") Send report
+
+      if loggedIn && (String(currentUserId) === String(comment.user_id) || isAdmin)
+        a.tiny(href="/comments/" + comment.id + "/edit") Edit
+        form(action="/comments/" + comment.id + "/delete", method="POST")
+          button.tiny.danger(type="submit") Delete
+
+    if comment.replies && comment.replies.length
+      div.replies
+        each reply in comment.replies
+          +commentThread(reply)
+          
+block content
+  section.detail-panel
+    img.cover.large(src=song.cover_image, alt=song.title)
+    div.detail-copy
+      p.eyebrow Song page
+      h1 #{song.title}
+      h2
+        a(href="/artists/" + song.artist_id) #{song.artist}
+      p.meta #{song.genre_name} · #{song.release_year}
+      p #{song.description}
+      if song.audio_file
+        audio(controls, preload="metadata", src=song.audio_file)
+      else
+        p.hint Let's talk music.
+
+  if loggedIn
+    section.section.compact
+      h2 Add this song to a public playlist
+      if playlists.length
+        form.inline-form(action="/playlists/" + playlists[0].id + "/add-song", method="POST", onsubmit="this.action='/playlists/' + this.playlist_id.value + '/add-song'")
+          input(type="hidden", name="song_id", value=song.id)
+          select(name="playlist_id", required)
+            each playlist in playlists
+              option(value=playlist.id) #{playlist.title}
+          button(type="submit") Add song
+      else
+        p.empty Create a playlist first, then add songs to it.
+
+  section.section
+    h2 Discussion
+    if loggedIn
+      form.form(action="/songs/" + song.id + "/comments", method="POST")
+        label Add your comment
+        textarea(name="comment_text", rows="4", required, placeholder="Share your opinion on this song...")
+        button(type="submit") Post Comment
+    else
+      p.empty You must #[a(href="/login") log in] to comment.
+
+    div.comments
+      if comments.length
+        each comment in comments
+          +commentThread(comment)
+      else
+        p.empty No comments yet. Start the discussion.

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.page-title.split
+    div
+      p.eyebrow Library
+      h1 Songs
+      p Browse the preset music catalogue. Search by song, artist, or genre.
+  form.form.search-form(action="/songs", method="GET")
+    label Search songs/artists
+    div.inline-form.clean
+      input(type="search", name="q", placeholder="Try: R&B, Kendrick, SZA...", value=q)
+      button(type="submit") Search
+  div.card-grid
+    if songs.length
+      each song in songs
+        a.card.song-card(href="/songs/" + song.id)
+          img.cover(src=song.cover_image, alt=song.title)
+          h3 #{song.title}
+          p #{song.artist}
+          span.tag #{song.genre_name}
+    else
+      p.empty No songs matched your search.

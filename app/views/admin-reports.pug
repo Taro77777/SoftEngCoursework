@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div.page-title
+    p.eyebrow Admin
+    h1 Reported comments
+    p Review comments reported by users. You can resolve the report or delete the comment.
+  div.comments
+    if reports.length
+      each report in reports
+        article.comment
+          div.comment-header
+            div
+              strong #{report.comment_author} on #[a(href="/songs/" + report.song_id) #{report.song_title}]
+              small Reported by #{report.reporter_username} · #{report.status} · #{report.created_at}
+          p #{report.comment_text}
+          p.meta Reason: #{report.reason}
+          div.comment-actions
+            form(action="/admin/reports/" + report.id + "/resolve", method="POST")
+              button.tiny(type="submit") Mark resolved
+            form(action="/comments/" + report.comment_id + "/delete", method="POST")
+              button.tiny.danger(type="submit") Delete comment
+    else
+      p.empty No reports yet.

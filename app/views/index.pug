@@ -1,4 +1,55 @@
 extends layout
+
 block content
-    h1 #{heading}
-    p first paragraphxxx
+  section.hero
+    div.hero-copy
+      p.eyebrow Music community
+      h1 Discuss music. Build playlists. Find your sound.
+      p MusicWe is a database-driven community website where users browse tracks, post discussion comments, reply to each other, and collaborate on public playlists.
+      div.hero-actions
+        a.button(href="/songs") Browse Songs
+        a.button.secondary(href="/playlists") Explore Playlists
+
+    if latestDiscussion
+      a.hero-card.now-discussing-card(
+        href="/songs/" + latestDiscussion.song_id,
+        style="--discussion-bg: url('" + latestDiscussion.cover_image + "')"
+      )
+        div.now-discussing-overlay
+          span Now discussing:
+          strong #{latestDiscussion.title}
+          p “#{latestDiscussion.comment_text}”
+          small Posted by #{latestDiscussion.username}
+    else
+      a.hero-card.now-discussing-card(
+        href="/songs",
+        style="--discussion-bg: url('/images/default-cover.jpg')"
+      )
+        div.now-discussing-overlay
+          span Now discussing:
+          strong Start the first discussion
+          p Browse a song and leave the first comment.
+
+  section.section
+    div.section-heading
+      h2 Featured Songs
+      a(href="/songs") View all
+    div.card-grid
+      each song in songs
+        a.card.song-card(href="/songs/" + song.id)
+          img.cover(src=song.cover_image, alt=song.title)
+          h3 #{song.title}
+          p #{song.artist}
+          span.tag #{song.genre_name}
+
+  section.section
+    div.section-heading
+      h2 Public Playlists
+      a(href="/playlists") View all
+    div.card-grid
+      each playlist in playlists
+        a.card(href="/playlists/" + playlist.id)
+          img.cover(src=playlist.cover_image, alt=playlist.title)
+          h3 #{playlist.title}
+          p #{playlist.description}
+          span.tag #{playlist.song_count} songs
